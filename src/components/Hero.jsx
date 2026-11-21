@@ -21,7 +21,7 @@ const HOVER_CARDS = [
     icon: TrendingDown,
     iconClass: 'from-[#FF7A45] to-[#FF551A] shadow-orange-500/30',
     anim: 'animate-float-delayed',
-    pos: 'left-[-20px] top-[60%] sm:-right-4 sm:top-16 lg:right-2',
+    pos: 'left-[-20px] top-[55%] sm:-right-4 sm:top-16 lg:right-2',
   },
   {
     id: 'unit-economics',
@@ -30,7 +30,7 @@ const HOVER_CARDS = [
     icon: TrendingUp,
     iconClass: 'from-emerald-400 to-emerald-600 shadow-emerald-500/30',
     anim: 'animate-float',
-    pos: 'right-[-20px] bottom-[100px] sm:-left-4 sm:top-24 sm:bottom-auto lg:left-2',
+    pos: 'right-[-20px] bottom-[80px] sm:-left-4 sm:top-24 sm:bottom-auto lg:left-2',
   },
   {
     id: 'experimentation',
@@ -39,7 +39,7 @@ const HOVER_CARDS = [
     icon: Sparkles,
     iconClass: 'from-[#3B8BFF] to-[#0668E1] shadow-blue-500/30',
     anim: 'animate-float',
-    pos: 'left-[-20px] bottom-[35px] sm:-right-2 sm:bottom-12 lg:right-4',
+    pos: 'left-[-20px] bottom-[10px] sm:-right-2 sm:bottom-12 lg:right-4',
   },
 ];
 
