@@ -11,7 +11,8 @@ import { ECOSYSTEM_PARTNERS } from '../data/landingData';
 /*
  * Hover cards config.
  * Mobile: small cards pinned to the corners, may extend beyond the portrait.
- * sm and up: slightly larger cards floating around the stage.
+ * sm: slightly larger cards overlapping the portrait edges.
+ * lg (desktop): cards sit fully outside the portrait on both sides.
  */
 const HOVER_CARDS = [
   {
@@ -21,7 +22,7 @@ const HOVER_CARDS = [
     icon: TrendingDown,
     iconClass: 'from-[#FF7A45] to-[#FF551A] shadow-orange-500/30',
     anim: 'animate-float-delayed',
-    pos: 'left-[-20px] top-[55%] sm:-right-4 sm:top-16 lg:right-2',
+    pos: 'left-[-20px] top-[55%] sm:-right-4 sm:top-16 lg:left-auto lg:-right-[320px] lg:top-16',
   },
   {
     id: 'unit-economics',
@@ -30,7 +31,7 @@ const HOVER_CARDS = [
     icon: TrendingUp,
     iconClass: 'from-emerald-400 to-emerald-600 shadow-emerald-500/30',
     anim: 'animate-float',
-    pos: 'right-[-20px] bottom-[80px] sm:-left-4 sm:top-24 sm:bottom-auto lg:left-2',
+    pos: 'right-[-20px] bottom-[80px] sm:-left-4 sm:top-24 sm:bottom-auto lg:right-auto lg:-left-[320px] lg:top-[40%] lg:bottom-auto',
   },
   {
     id: 'experimentation',
@@ -39,7 +40,7 @@ const HOVER_CARDS = [
     icon: Sparkles,
     iconClass: 'from-[#3B8BFF] to-[#0668E1] shadow-blue-500/30',
     anim: 'animate-float',
-    pos: 'left-[-20px] bottom-[10px] sm:-right-2 sm:bottom-12 lg:right-4',
+    pos: 'left-[-20px] bottom-[10px] sm:-right-2 sm:bottom-12 lg:left-auto lg:-right-[320px] lg:bottom-16',
   },
 ];
 
@@ -115,15 +116,15 @@ export default function Hero({ onOpenModal }) {
           Burning ₹2L– ₹1Cr on Meta Ads but facing high CAC, rising RTO and low profits? Fix what&apos;s stopping your brand from scaling.
         </p>
 
-        {/* Hero Visual Stage: Portrait + Hover Cards */}
-        <div className="relative mx-auto mt-12 w-[340px] sm:w-full sm:max-w-4xl">
+        {/* Hero Visual Stage: sized to the portrait so hover cards anchor to it */}
+        <div className="relative mx-auto mt-12 w-full max-w-[340px] sm:max-w-[450px] lg:max-w-[480px]">
           {/* Hover Cards (may extend beyond the portrait edges) */}
           {HOVER_CARDS.map((card) => (
             <HoverCard key={card.id} {...card} />
           ))}
 
           {/* Portrait frame: all four corners rounded 18px */}
-          <div className="relative mx-auto w-full max-w-[340px] sm:max-w-[410px] md:max-w-[450px] lg:max-w-[480px] rounded-[18px] p-[1.5px] bg-gradient-to-b from-[#FF551A]/40 via-white to-slate-200 shadow-[0_30px_60px_-20px_rgba(15,23,42,0.35)]">
+          <div className="relative w-full rounded-[18px] p-[1.5px] bg-gradient-to-b from-[#FF551A]/40 via-white to-slate-200 shadow-[0_30px_60px_-20px_rgba(15,23,42,0.35)]">
             <div className="relative overflow-hidden rounded-[16.5px] bg-slate-100">
               {/* D2C Partner badge */}
               <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 bg-slate-950/90 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-full whitespace-nowrap shadow-lg">
