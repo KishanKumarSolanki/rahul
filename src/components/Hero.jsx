@@ -5,16 +5,85 @@ import {
   TrendingUp,
   ShieldCheck,
   Sparkles,
-  BarChart3,
 } from 'lucide-react';
 import { ECOSYSTEM_PARTNERS } from '../data/landingData';
+
+/*
+ * Hover cards config.
+ * Mobile: small cards pinned to the corners, may extend beyond the portrait.
+ * sm and up: slightly larger cards floating around the stage.
+ */
+const HOVER_CARDS = [
+  {
+    id: 'order-quality',
+    eyebrow: 'Order Quality',
+    title: 'CAC & RTO Optimization',
+    icon: TrendingDown,
+    iconClass: 'from-[#FF7A45] to-[#FF551A] shadow-orange-500/30',
+    anim: 'animate-float-delayed',
+    pos: 'right-[-32px] top-[58%] sm:right-2 sm:top-14 lg:right-6',
+  },
+  {
+    id: 'unit-economics',
+    eyebrow: 'Unit Economics',
+    title: 'ROAS & Contribution Profit',
+    icon: TrendingUp,
+    iconClass: 'from-emerald-400 to-emerald-600 shadow-emerald-500/30',
+    anim: 'animate-float',
+    pos: 'left-[-32px] bottom-[66px] sm:left-2 sm:top-10 sm:bottom-auto lg:left-6',
+  },
+  {
+    id: 'experimentation',
+    eyebrow: 'Experimentation',
+    title: 'Data-Driven Creative Testing',
+    icon: Sparkles,
+    iconClass: 'from-[#3B8BFF] to-[#0668E1] shadow-blue-500/30',
+    anim: 'animate-float',
+    pos: 'right-[-32px] bottom-[14px] sm:right-4 sm:bottom-10 lg:right-10',
+  },
+];
+
+function HoverCard({ eyebrow, title, icon: Icon, iconClass, anim, pos }) {
+  return (
+    <div
+      className={[
+        'absolute z-20 flex items-center gap-2 sm:gap-3',
+        'rounded-2xl whitespace-nowrap',
+        'px-2.5 py-2 sm:px-4 sm:py-3 text-left',
+        'bg-white/85 backdrop-blur-xl',
+        'border border-white/80 ring-1 ring-slate-900/5',
+        'shadow-[0_18px_40px_-12px_rgba(15,23,42,0.25)]',
+        anim,
+        pos,
+      ].join(' ')}
+    >
+      <div
+        className={[
+          'flex h-7 w-7 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl',
+          'bg-gradient-to-br text-white shadow-lg',
+          iconClass,
+        ].join(' ')}
+      >
+        <Icon className="w-3.5 h-3.5 sm:w-5 sm:h-5" strokeWidth={2.4} />
+      </div>
+      <div className="flex flex-col">
+        <span className="text-[8px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] leading-none mb-1 text-[#FF551A]">
+          {eyebrow}
+        </span>
+        <span className="text-[10px] sm:text-sm font-extrabold leading-tight text-slate-900">
+          {title}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function Hero({ onOpenModal }) {
   const [imgError, setImgError] = useState(false);
   const partnerStrip = [...ECOSYSTEM_PARTNERS, ...ECOSYSTEM_PARTNERS];
 
   return (
-    <section className="relative bg-[#FAFAFA] bg-grid-pattern pt-10 sm:pt-14 pb-0 overflow-hidden border-b border-slate-200">
+    <section className="relative bg-[#FAFAFA] bg-grid-pattern pt-5 sm:pt-7 pb-0 overflow-hidden border-b border-slate-200">
       {/* Subtle Ambient Glow */}
       <div
         aria-hidden="true"
@@ -23,7 +92,7 @@ export default function Hero({ onOpenModal }) {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {/* Eyebrow Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF551A]/10 border border-[#FF551A]/20 text-[#FF551A] text-xs font-extrabold tracking-widest uppercase mb-6">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF551A]/10 border border-[#FF551A]/20 text-[#FF551A] text-xs font-extrabold tracking-widest uppercase mb-5">
           <span className="w-2 h-2 rounded-full bg-[#FF551A] animate-pulse" />
           RAHUL BHATIYA • D2C GROWTH PARTNER
         </div>
@@ -34,144 +103,76 @@ export default function Hero({ onOpenModal }) {
           <span className="text-[#FF551A]">Goes Under.</span>
         </h1>
 
-        {/* Sub-headline */}
-        <p className="mt-5 text-lg sm:text-xl md:text-2xl font-bold text-slate-800 max-w-3xl mx-auto leading-snug">
-          Your rising ad spend won&apos;t save your business. Profitable customer acquisition will.
+        {/* Sub-headline (two lines) */}
+        <p className="mt-4 text-lg sm:text-xl md:text-2xl font-bold text-slate-800 max-w-3xl mx-auto leading-snug">
+          Your rising ad spend won&apos;t save your business.
+          <br />
+          Profitable customer acquisition will.
         </p>
 
         {/* Body Copy */}
-        <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Burning cash on Meta Ads, struggling with high CAC, increasing RTO and declining profits?
-          If you&apos;re spending <span className="font-semibold text-slate-900">₹2L–₹1Cr every month</span> but
-          your brand isn&apos;t scaling, it&apos;s time to fix what&apos;s holding your growth back.
+        <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          Burning ₹2L– ₹1Cr on Meta Ads but facing high CAC, rising RTO and low profits? Fix what&apos;s stopping your brand from scaling.
         </p>
 
-        {/* Bold Anchor Line */}
-        <p className="mt-4 text-base sm:text-lg font-extrabold text-slate-950">
-          Stop burning money. Start building a profitable growth system.
-        </p>
+        {/* Hero Visual Stage: Portrait + Hover Cards */}
+        <div className="relative mx-auto mt-12 w-[340px] sm:w-full sm:max-w-4xl">
+          {/* Hover Cards (may extend beyond the portrait edges) */}
+          {HOVER_CARDS.map((card) => (
+            <HoverCard key={card.id} {...card} />
+          ))}
 
-        {/* Primary CTA */}
-        <div className="mt-7 flex flex-col items-center">
-          <button
-            onClick={onOpenModal}
-            className="group inline-flex items-center justify-center gap-3 bg-[#FF551A] hover:bg-[#E0440E] text-white font-extrabold text-sm sm:text-base tracking-wide px-7 sm:px-9 py-4 sm:py-4.5 rounded-2xl shadow-glow transition-all duration-200 hover:-translate-y-0.5"
-          >
-            <span>FIX MY D2C BRAND&apos;S SCALING PROBLEM</span>
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </button>
-          <span className="mt-2.5 text-xs font-medium text-slate-500">
-            For established D2C brands spending ₹2L–₹1Cr/month on Meta Ads
-          </span>
+          {/* Portrait frame: all four corners rounded 14px */}
+          <div className="relative mx-auto w-full sm:w-[330px] md:w-[360px] rounded-[14px] p-[1.5px] bg-gradient-to-b from-[#FF551A]/40 via-white to-slate-200 shadow-[0_30px_60px_-20px_rgba(15,23,42,0.35)]">
+            <div className="relative overflow-hidden rounded-[12.5px] bg-slate-100">
+              {/* D2C Partner badge */}
+              <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 bg-slate-950/90 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-full whitespace-nowrap shadow-lg">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#FF551A]" />
+                <span>D2C Partner</span>
+              </div>
+
+              {!imgError ? (
+                <img
+                  src="/rahul-bhatiya.png"
+                  alt="Rahul Bhatiya — D2C Growth Partner"
+                  onError={() => setImgError(true)}
+                  className="block w-full h-[400px] sm:h-[380px] object-cover object-top"
+                />
+              ) : (
+                <div className="w-full h-[400px] sm:h-[380px] bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center text-white p-6">
+                  <div className="w-24 h-24 rounded-full bg-[#FF551A] flex items-center justify-center text-3xl font-extrabold mb-3 shadow-lg">
+                    RB
+                  </div>
+                  <div className="font-bold text-lg">Rahul Bhatiya</div>
+                  <div className="text-xs text-slate-400 mt-1">D2C Growth Partner</div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Hero Visual Stage: Executive Portrait + Floating Performance Cards */}
-        <div className="relative mt-10 sm:mt-12 max-w-4xl mx-auto pt-4">
-          {/* Floating Card Top-Left */}
-          <div className="hidden md:flex items-center gap-3 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-card rounded-2xl px-4 py-3 text-left absolute left-2 lg:left-6 top-10 z-20 animate-float">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
-              <TrendingUp className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Unit Economics
-              </div>
-              <div className="text-sm font-extrabold text-slate-900">
-                ROAS &amp; Contribution Profit
-              </div>
-            </div>
-          </div>
+        {/* CTA block */}
+        <div className="mt-10 sm:mt-12 pb-12 sm:pb-16 flex flex-col items-center">
+          <p className="text-base sm:text-lg font-extrabold text-slate-950">
+            Stop burning money. Start building a profitable growth system.
+          </p>
 
-          {/* Floating Card Top-Right */}
-          <div className="hidden md:flex items-center gap-3 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-card rounded-2xl px-4 py-3 text-left absolute right-2 lg:right-6 top-14 z-20 animate-float-delayed">
-            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-[#FF551A]">
-              <TrendingDown className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Order Quality
-              </div>
-              <div className="text-sm font-extrabold text-slate-900">
-                CAC &amp; RTO Optimization
-              </div>
-            </div>
-          </div>
+          <button
+            onClick={onOpenModal}
+            className="group mt-5 inline-flex items-center justify-center gap-3 bg-[#FF551A] hover:bg-[#E0440E] text-white font-extrabold text-sm sm:text-base tracking-wide px-7 sm:px-9 py-4 sm:py-4.5 rounded-2xl shadow-glow transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <span>BOOK MY STRATEGY CALL</span>
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+          </button>
 
-          {/* Floating Card Bottom-Left */}
-          <div className="hidden md:flex items-center gap-3 bg-slate-950 text-white border border-slate-800 shadow-xl rounded-2xl px-4 py-3 text-left absolute left-4 lg:left-10 bottom-8 z-20 animate-float-delayed">
-            <div className="w-10 h-10 rounded-xl bg-[#0668E1]/20 border border-[#0668E1]/40 flex items-center justify-center text-[#3b82f6]">
-              <BarChart3 className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Ad Spend Focus
-              </div>
-              <div className="text-sm font-extrabold text-white">
-                ₹2L–₹1Cr/Mo Scaling
-              </div>
-            </div>
-          </div>
-
-          {/* Floating Card Bottom-Right */}
-          <div className="hidden md:flex items-center gap-3 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-card rounded-2xl px-4 py-3 text-left absolute right-4 lg:right-10 bottom-10 z-20 animate-float">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-[#0668E1]">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Experimentation
-              </div>
-              <div className="text-sm font-extrabold text-slate-900">
-                Data-Driven Creative Testing
-              </div>
-            </div>
-          </div>
-
-          {/* Center Framed Portrait */}
-          <div className="relative mx-auto w-[280px] sm:w-[330px] md:w-[360px] rounded-t-3xl bg-gradient-to-b from-slate-200/80 via-slate-100 to-white border-x border-t border-slate-300/80 shadow-2xl overflow-hidden pt-4 px-4">
-            <div className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 bg-slate-950/90 text-white text-[11px] font-bold px-3 py-1 rounded-full">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#FF551A]" />
-              <span>D2C Partner</span>
-            </div>
-
-            {!imgError ? (
-              <img
-                src="/rahul-bhatiya.png"
-                alt="Rahul Bhatiya — D2C Growth Partner"
-                onError={() => setImgError(true)}
-                className="w-full h-[330px] sm:h-[380px] object-cover object-top rounded-t-2xl"
-              />
-            ) : (
-              <div className="w-full h-[330px] sm:h-[380px] rounded-t-2xl bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center text-white p-6">
-                <div className="w-24 h-24 rounded-full bg-[#FF551A] flex items-center justify-center text-3xl font-extrabold mb-3">
-                  RB
-                </div>
-                <div className="font-bold text-lg">Rahul Bhatiya</div>
-                <div className="text-xs text-slate-400 mt-1">D2C Growth Partner</div>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Metric Pills */}
-          <div className="grid grid-cols-2 gap-2.5 mt-4 md:hidden text-left">
-            <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
-              <div className="text-[10px] font-bold uppercase text-slate-400">Unit Economics</div>
-              <div className="text-xs font-extrabold text-slate-900 mt-0.5">
-                ROAS &amp; Profit Focus
-              </div>
-            </div>
-            <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
-              <div className="text-[10px] font-bold uppercase text-slate-400">Order Quality</div>
-              <div className="text-xs font-extrabold text-slate-900 mt-0.5">
-                CAC &amp; RTO Control
-              </div>
-            </div>
-          </div>
+          <span className="mt-2.5 text-xs font-medium text-slate-500">
+            For established D2C brands spending ₹2L– ₹1Cr/month on Meta Ads
+          </span>
         </div>
       </div>
 
       {/* Ecosystem Logo Strip */}
-      <div className="mt-8 bg-white border-t border-slate-200 py-4 overflow-hidden marquee-wrapper">
+      <div className="bg-white border-t border-slate-200 py-4 overflow-hidden marquee-wrapper">
         <div className="flex whitespace-nowrap animate-marquee-slow w-max items-center">
           {partnerStrip.map((partner, index) => (
             <div

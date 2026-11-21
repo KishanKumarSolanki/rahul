@@ -20,16 +20,16 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900">
       <TopTicker />
-      <Navbar onOpenModal={() => setIsBookingOpen(true)} />
+      {/* <Navbar onOpenModal={() => setIsBookingOpen(true)} /> */}
 
       <main className="flex-1">
         <Hero onOpenModal={() => setIsBookingOpen(true)} />
         <PainPoints onOpenModal={() => setIsBookingOpen(true)} />
         <Methodology onOpenModal={() => setIsBookingOpen(true)} />
-        <Differentiation />
-        <CampaignProof onOpenVideo={() => setIsVideoOpen(true)} />
-        <AboutPartner />
-        <Qualification />
+        <Differentiation onOpenModal={() => setIsBookingOpen(true)} />
+        <CampaignProof onOpenModal={() => setIsBookingOpen(true)} />
+        <AboutPartner onOpenModal={() => setIsBookingOpen(true)} />
+        <Qualification onOpenModal={() => setIsBookingOpen(true)} />
         <FinalCta onOpenModal={() => setIsBookingOpen(true)} />
       </main>
 

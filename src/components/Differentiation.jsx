@@ -1,8 +1,8 @@
 import React from 'react';
-import { Award, CheckCircle2, X, Check } from 'lucide-react';
+import { Award, CheckCircle2, X, Check, ArrowRight } from 'lucide-react';
 import { MARKETER_TRAITS } from '../data/landingData';
 
-export default function Differentiation() {
+export default function Differentiation({ onOpenModal }) {
   return (
     <section className="py-16 sm:py-24 bg-[#09090B] bg-dark-grid text-white relative overflow-hidden">
       {/* Ambient Glow */}
@@ -107,6 +107,17 @@ export default function Differentiation() {
                 That&apos;s the difference between someone who runs ads and someone who understands
                 performance marketing.
               </p>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-6">
+              <button
+                onClick={onOpenModal}
+                className="group inline-flex items-center justify-center gap-3 bg-[#FF551A] hover:bg-[#E0440E] text-white font-extrabold text-sm sm:text-base tracking-wide px-7 py-4 rounded-2xl shadow-glow transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <span>PARTNER FOR PROFITABLE SCALE</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
           </div>
         </div>

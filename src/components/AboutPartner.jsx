@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { CheckCircle2, UserCheck, Target } from 'lucide-react';
+import { CheckCircle2, UserCheck, Target, ArrowRight } from 'lucide-react';
 import { DELIVERABLES } from '../data/landingData';
 
-export default function AboutPartner() {
+export default function AboutPartner({ onOpenModal }) {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -60,6 +60,21 @@ export default function AboutPartner() {
               Performance Marketer | D2C Growth Partner
             </p>
 
+            <div className="mt-5 grid sm:grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-[#FF551A]/25 bg-[#FF551A]/5 p-4">
+                <div className="text-2xl font-extrabold text-[#FF551A]">3+ Years</div>
+                <div className="mt-1 text-sm font-bold text-slate-800">
+                  Meta Ads experience with D2C brands
+                </div>
+              </div>
+              <div className="rounded-2xl border border-[#FF551A]/25 bg-[#FF551A]/5 p-4">
+                <div className="text-2xl font-extrabold text-[#FF551A]">₹20L+/Month</div>
+                <div className="mt-1 text-sm font-bold text-slate-800">
+                  D2C ad spend managed
+                </div>
+              </div>
+            </div>
+
             <div className="mt-5 space-y-4 text-base text-slate-600 leading-relaxed">
               <p>
                 I help established D2C brands improve their Meta Ads performance through customer
@@ -104,6 +119,17 @@ export default function AboutPartner() {
                   </p>
                 </div>
               </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-8">
+              <button
+                onClick={onOpenModal}
+                className="group inline-flex items-center justify-center gap-3 bg-[#FF551A] hover:bg-[#E0440E] text-white font-extrabold text-sm sm:text-base tracking-wide px-7 py-4 rounded-2xl shadow-glow transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <span>BOOK A STRATEGY CALL WITH RAHUL</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
           </div>
         </div>

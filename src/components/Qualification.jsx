@@ -1,8 +1,8 @@
 import React from 'react';
-import { CheckCircle2, XCircle, Filter } from 'lucide-react';
+import { CheckCircle2, XCircle, Filter, ArrowRight } from 'lucide-react';
 import { GOOD_FIT_CRITERIA, NOT_FOR_CRITERIA } from '../data/landingData';
 
-export default function Qualification() {
+export default function Qualification({ onOpenModal }) {
   return (
     <section id="fit" className="py-16 sm:py-24 bg-[#F8FAFC]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,6 +53,23 @@ export default function Qualification() {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* CTA Button */}
+        <div className="mt-12 text-center flex flex-col items-center">
+          <p className="text-base sm:text-lg font-extrabold text-slate-900 mb-4">
+            Meet the criteria? Let&apos;s build your scaling roadmap.
+          </p>
+          <button
+            onClick={onOpenModal}
+            className="group inline-flex items-center justify-center gap-3 bg-[#FF551A] hover:bg-[#E0440E] text-white font-extrabold text-sm sm:text-base tracking-wide px-8 py-4 sm:py-4.5 rounded-2xl shadow-glow transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <span>APPLY FOR YOUR STRATEGY CALL</span>
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+          </button>
+          <span className="mt-2.5 text-xs text-slate-500 font-medium">
+            Strictly for D2C brands spending ₹2L–₹1Cr/month on Meta Ads
+          </span>
         </div>
       </div>
     </section>
