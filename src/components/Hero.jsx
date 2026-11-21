@@ -21,7 +21,7 @@ const HOVER_CARDS = [
     icon: TrendingDown,
     iconClass: 'from-[#FF7A45] to-[#FF551A] shadow-orange-500/30',
     anim: 'animate-float-delayed',
-    pos: 'right-[-32px] top-[58%] sm:right-2 sm:top-14 lg:right-6',
+    pos: 'left-[-20px] top-[60%] sm:-right-4 sm:top-16 lg:right-2',
   },
   {
     id: 'unit-economics',
@@ -30,7 +30,7 @@ const HOVER_CARDS = [
     icon: TrendingUp,
     iconClass: 'from-emerald-400 to-emerald-600 shadow-emerald-500/30',
     anim: 'animate-float',
-    pos: 'left-[-32px] bottom-[66px] sm:left-2 sm:top-10 sm:bottom-auto lg:left-6',
+    pos: 'right-[-20px] bottom-[100px] sm:-left-4 sm:top-24 sm:bottom-auto lg:left-2',
   },
   {
     id: 'experimentation',
@@ -39,7 +39,7 @@ const HOVER_CARDS = [
     icon: Sparkles,
     iconClass: 'from-[#3B8BFF] to-[#0668E1] shadow-blue-500/30',
     anim: 'animate-float',
-    pos: 'right-[-32px] bottom-[14px] sm:right-4 sm:bottom-10 lg:right-10',
+    pos: 'left-[-20px] bottom-[35px] sm:-right-2 sm:bottom-12 lg:right-4',
   },
 ];
 
@@ -122,9 +122,9 @@ export default function Hero({ onOpenModal }) {
             <HoverCard key={card.id} {...card} />
           ))}
 
-          {/* Portrait frame: all four corners rounded 14px */}
-          <div className="relative mx-auto w-full sm:w-[330px] md:w-[360px] rounded-[14px] p-[1.5px] bg-gradient-to-b from-[#FF551A]/40 via-white to-slate-200 shadow-[0_30px_60px_-20px_rgba(15,23,42,0.35)]">
-            <div className="relative overflow-hidden rounded-[12.5px] bg-slate-100">
+          {/* Portrait frame: all four corners rounded 18px */}
+          <div className="relative mx-auto w-full max-w-[340px] sm:max-w-[410px] md:max-w-[450px] lg:max-w-[480px] rounded-[18px] p-[1.5px] bg-gradient-to-b from-[#FF551A]/40 via-white to-slate-200 shadow-[0_30px_60px_-20px_rgba(15,23,42,0.35)]">
+            <div className="relative overflow-hidden rounded-[16.5px] bg-slate-100">
               {/* D2C Partner badge */}
               <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 bg-slate-950/90 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-full whitespace-nowrap shadow-lg">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#FF551A]" />
@@ -136,10 +136,10 @@ export default function Hero({ onOpenModal }) {
                   src="/rahul-bhatiya.png"
                   alt="Rahul Bhatiya — D2C Growth Partner"
                   onError={() => setImgError(true)}
-                  className="block w-full h-[400px] sm:h-[380px] object-cover object-top"
+                  className="block w-full h-auto aspect-[1122/1402] object-contain object-top"
                 />
               ) : (
-                <div className="w-full h-[400px] sm:h-[380px] bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center text-white p-6">
+                <div className="w-full aspect-[1122/1402] min-h-[440px] bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center text-white p-6">
                   <div className="w-24 h-24 rounded-full bg-[#FF551A] flex items-center justify-center text-3xl font-extrabold mb-3 shadow-lg">
                     RB
                   </div>
