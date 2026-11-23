@@ -323,8 +323,11 @@ export default function CampaignProof({ onOpenModal }) {
             <span>VERIFIED CAMPAIGN BREAKDOWNS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold leading-tight">
-            Real Campaign Data. <span className="text-[#FF551A]">Real Performance.</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold leading-[1.3] sm:leading-snug tracking-tight">
+            Real Campaign Data.{' '}
+            <span className="block sm:inline text-[#FF551A] mt-2 sm:mt-0 whitespace-nowrap">
+              Real Performance.
+            </span>
           </h2>
 
           <p className="mt-3 text-base sm:text-lg text-slate-300">
@@ -334,14 +337,10 @@ export default function CampaignProof({ onOpenModal }) {
 
         {/* Screenshot Carousel */}
         <div className="mt-12">
-          <div className="mb-6 flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div className="mb-6 text-center sm:text-left">
             <h3 className="text-xl sm:text-2xl font-extrabold text-white">
               Real Store &amp; Campaign Screenshots
             </h3>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#FF551A]" />
-              Auto-scrolling
-            </span>
           </div>
           <ScreenshotCarousel images={campaignResultImages} />
           <StatsStrip proofs={CAMPAIGN_PROOFS} />

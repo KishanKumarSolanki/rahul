@@ -22,7 +22,7 @@ const HOVER_CARDS = [
     icon: TrendingDown,
     iconClass: 'from-[#FF7A45] to-[#FF551A] shadow-orange-500/30',
     anim: 'animate-float-delayed',
-    pos: 'left-[-20px] top-[55%] sm:-right-4 sm:top-16 lg:left-auto lg:-right-[320px] lg:top-16',
+    pos: 'right-[-20px] top-[52%] sm:-right-8 sm:top-16 lg:-right-24 lg:top-16',
   },
   {
     id: 'unit-economics',
@@ -31,7 +31,7 @@ const HOVER_CARDS = [
     icon: TrendingUp,
     iconClass: 'from-emerald-400 to-emerald-600 shadow-emerald-500/30',
     anim: 'animate-float',
-    pos: 'right-[-20px] bottom-[80px] sm:-left-4 sm:top-24 sm:bottom-auto lg:right-auto lg:-left-[320px] lg:top-[40%] lg:bottom-auto',
+    pos: 'left-[-20px] bottom-[85px] sm:-left-8 sm:top-28 sm:bottom-auto lg:-left-28 lg:top-[38%] lg:bottom-auto',
   },
   {
     id: 'experimentation',
@@ -40,7 +40,7 @@ const HOVER_CARDS = [
     icon: Sparkles,
     iconClass: 'from-[#3B8BFF] to-[#0668E1] shadow-blue-500/30',
     anim: 'animate-float',
-    pos: 'left-[-20px] bottom-[10px] sm:-right-2 sm:bottom-12 lg:left-auto lg:-right-[320px] lg:bottom-16',
+    pos: 'right-[-20px] bottom-[20px] sm:-right-6 sm:bottom-12 lg:-right-20 lg:bottom-14',
   },
 ];
 
@@ -104,11 +104,10 @@ export default function Hero({ onOpenModal }) {
           <span className="text-[#FF551A]">Goes Under.</span>
         </h1>
 
-        {/* Sub-headline (two lines) */}
-        <p className="mt-4 text-lg sm:text-xl md:text-2xl font-bold text-slate-800 max-w-3xl mx-auto leading-snug">
-          Your rising ad spend won&apos;t save your business.
-          <br />
-          Profitable customer acquisition will.
+        {/* Sub-headline (exact 2 lines on mobile and desktop) */}
+        <p className="mt-4 text-[13.5px] min-[375px]:text-[14.5px] min-[410px]:text-base sm:text-xl md:text-2xl font-bold tracking-tight text-slate-800 max-w-3xl mx-auto leading-tight sm:leading-snug">
+          <span className="block">Your rising ad spend won&apos;t save your business.</span>
+          <span className="block mt-1 sm:mt-0">Profitable customer acquisition will.</span>
         </p>
 
         {/* Body Copy */}

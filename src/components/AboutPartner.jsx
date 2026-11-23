@@ -18,10 +18,10 @@ export default function AboutPartner({ onOpenModal }) {
                     src="/rahul-bhatiya.png"
                     alt="Rahul Bhatiya — Performance Marketer & D2C Growth Partner"
                     onError={() => setImgError(true)}
-                    className="w-full h-[420px] sm:h-[470px] object-cover object-top"
+                    className="w-full h-auto aspect-[1122/1402] object-contain object-top"
                   />
                 ) : (
-                  <div className="w-full h-[420px] bg-slate-900 flex flex-col items-center justify-center text-white">
+                  <div className="w-full aspect-[1122/1402] min-h-[420px] bg-slate-900 flex flex-col items-center justify-center text-white">
                     <div className="w-24 h-24 rounded-full bg-[#FF551A] flex items-center justify-center text-3xl font-extrabold">
                       RB
                     </div>

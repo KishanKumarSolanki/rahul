@@ -6,6 +6,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
+import { trackMetaLead } from '../utils/metaPixel';
 
 export const LEAD_FORM_URL =
   'https://lead365.in/f/only-for-brands-spending-atleast-inr-60-80k-per-month-wzTsvik8';
@@ -75,6 +76,7 @@ export default function StrategyModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    trackMetaLead(form);
     setSubmitted(true);
   };
 
