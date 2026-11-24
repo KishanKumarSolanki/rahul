@@ -8,6 +8,7 @@ import Differentiation from './components/Differentiation';
 import CampaignProof from './components/CampaignProof';
 import AboutPartner from './components/AboutPartner';
 import Qualification from './components/Qualification';
+import Testimonials from './components/Testimonials';
 import FinalCta from './components/FinalCta';
 import StickyBottomBar from './components/StickyBottomBar';
 import StrategyModal from './components/StrategyModal';
@@ -39,6 +40,7 @@ export default function App() {
         <CampaignProof onOpenModal={() => handleOpenBooking('CampaignProof')} />
         <AboutPartner onOpenModal={() => handleOpenBooking('AboutPartner')} />
         <Qualification onOpenModal={() => handleOpenBooking('Qualification')} />
+        <Testimonials />
         <FinalCta onOpenModal={() => handleOpenBooking('FinalCta')} />
       </main>
 
