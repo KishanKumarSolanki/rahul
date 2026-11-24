@@ -2,9 +2,9 @@ export const META_DATASET_ID = '1463655781460579';
 export const META_CAPI_TOKEN =
   'EAARcFJu7ARcBTHMul9o9U2ZAgAuTntu4XjcQxilrzWrCaGbRDq5cMG4DYyTKwZBMmBCPNPcModtMFttnYnWHN9zzDPaG8tsUtPbB021AukAeUa8HpKJYygfHqxnuMK3P0LMoqrkLb01ZAaHkpTN3wlAU0vXFfzcp6yjCMS2LuxRzUjmwFLLvxZCrdyNyPQL4qAZDZD';
 
-/**
- * SHA-256 hashing using Web Crypto API for client-side Conversions API matching.
- */
+// ─────────────────────────────────────────────
+// SHA-256 Hashing (Web Crypto API)
+// ─────────────────────────────────────────────
 async function hashValue(str) {
   if (!str) return null;
   try {
@@ -22,9 +22,9 @@ async function hashValue(str) {
   return null;
 }
 
-/**
- * Normalizes phone number to numbers only (adds India country code 91 if 10 digits).
- */
+// ─────────────────────────────────────────────
+// Phone Normalizer (India: 91XXXXXXXXXX)
+// ─────────────────────────────────────────────
 function normalizePhone(phone) {
   if (!phone) return '';
   const digits = phone.replace(/\D/g, '');
@@ -32,15 +32,71 @@ function normalizePhone(phone) {
   return digits;
 }
 
-/**
- * Track standard or custom events with both Browser Pixel and Meta Conversions API (CAPI).
- * Deduplication is handled via unique event_id.
- */
+// ─────────────────────────────────────────────
+// Auto-capture FBC (Facebook Click ID)
+// Reads _fbc cookie set by Meta Pixel on ad click
+// ─────────────────────────────────────────────
+function getFbc() {
+  try {
+    // Try cookie first
+    const match = document.cookie.match(/_fbc=([^;]+)/);
+    if (match) return match[1];
+
+    // Fallback: build fbc from fbclid URL param (if ad click just happened)
+    const urlParams = new URLSearchParams(window.location.search);
+    const fbclid = urlParams.get('fbclid');
+    if (fbclid) {
+      const ts = Math.floor(Date.now() / 1000);
+      return `fb.1.${ts}.${fbclid}`;
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────
+// Auto-capture FBP (Facebook Browser ID)
+// Reads _fbp cookie set by Meta Pixel on page load
+// ─────────────────────────────────────────────
+function getFbp() {
+  try {
+    const match = document.cookie.match(/_fbp=([^;]+)/);
+    if (match) return match[1];
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────
+// Fetch Client IP Address via public API
+// (browser cannot get real IP directly)
+// ─────────────────────────────────────────────
+async function getClientIp() {
+  try {
+    const res = await fetch('https://api.ipify.org?format=json', {
+      signal: AbortSignal.timeout(3000),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      return json.ip || null;
+    }
+  } catch (e) {
+    // Network or timeout — skip silently
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────
+// Core Event Tracker — Pixel + CAPI with Dedup
+// ─────────────────────────────────────────────
 export async function trackMetaEvent(eventName, customData = {}, rawUserData = {}) {
   const eventId = `evt_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
 
-  // 1. Client-Side Browser Pixel (fbq)
+  // 1. Browser Pixel (client-side) — dedup via eventID
   if (typeof window !== 'undefined' && window.fbq) {
     try {
       window.fbq('track', eventName, customData, { eventID: eventId });
@@ -49,23 +105,41 @@ export async function trackMetaEvent(eventName, customData = {}, rawUserData = {
     }
   }
 
-  // 2. Server-side / Direct Meta Conversions API (CAPI)
+  // 2. Meta Conversions API (server-side) — dedup via same eventID
   try {
+    // Auto-capture signals (no extra form fields needed)
+    const fbc = getFbc();
+    const fbp = getFbp();
+    const clientIp = await getClientIp();
+
+    // Build user_data with all available signals
     const userData = {
-      client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      client_user_agent: userAgent,
     };
 
+    // FBC — improves match quality by +33%
+    if (fbc) userData.fbc = fbc;
+
+    // FBP — improves match quality by +25%
+    if (fbp) userData.fbp = fbp;
+
+    // Client IP — improves match quality by +33%
+    if (clientIp) userData.client_ip_address = clientIp;
+
+    // Hashed Email — improves match quality by +35%
     if (rawUserData.email) {
       const hashedEmail = await hashValue(rawUserData.email);
       if (hashedEmail) userData.em = [hashedEmail];
     }
 
+    // Hashed Phone — improves match quality significantly
     if (rawUserData.phone) {
       const cleanPhone = normalizePhone(rawUserData.phone);
       const hashedPhone = await hashValue(cleanPhone);
       if (hashedPhone) userData.ph = [hashedPhone];
     }
 
+    // Hashed First + Last Name
     if (rawUserData.name) {
       const nameParts = rawUserData.name.trim().split(/\s+/);
       const firstName = nameParts[0];
@@ -85,7 +159,7 @@ export async function trackMetaEvent(eventName, customData = {}, rawUserData = {
         {
           event_name: eventName,
           event_time: Math.floor(Date.now() / 1000),
-          event_id: eventId,
+          event_id: eventId,              // Deduplication key (matches fbq eventID above)
           event_source_url: currentUrl,
           action_source: 'website',
           user_data: userData,
@@ -102,7 +176,7 @@ export async function trackMetaEvent(eventName, customData = {}, rawUserData = {
       body: JSON.stringify(payload),
       keepalive: true,
     }).catch(() => {
-      // Background network fallback, ignore errors silently
+      // Silent fail — background fire
     });
   } catch (err) {
     console.warn('Meta CAPI error:', err);
@@ -111,9 +185,9 @@ export async function trackMetaEvent(eventName, customData = {}, rawUserData = {
   return eventId;
 }
 
-/**
- * Tracks a completed Lead form submission across Pixel + CAPI.
- */
+// ─────────────────────────────────────────────
+// Lead Event — form submit
+// ─────────────────────────────────────────────
 export async function trackMetaLead(formData) {
   return trackMetaEvent(
     'Lead',
@@ -134,9 +208,45 @@ export async function trackMetaLead(formData) {
   );
 }
 
-/**
- * Tracks CTA button clicks (Contact/Schedule intent).
- */
+// ─────────────────────────────────────────────
+// CRM Status → Meta Event Mapping
+// New Lead → Lead | Qualified → QualifiedLead | Purchase → Purchase
+// Junk/Not Qualified → DO NOT send
+// ─────────────────────────────────────────────
+export async function trackCrmStatusChange(crmStatus, leadData = {}) {
+  const CRM_EVENT_MAP = {
+    'new_lead':   'Lead',
+    'qualified':  'QualifiedLead',
+    'purchase':   'Purchase',
+    // 'junk'     → intentionally not mapped
+    // 'not_qualified' → intentionally not mapped
+  };
+
+  const eventName = CRM_EVENT_MAP[crmStatus?.toLowerCase()];
+  if (!eventName) {
+    console.log(`[Meta CAPI] CRM status "${crmStatus}" — no event sent (intentional).`);
+    return null;
+  }
+
+  return trackMetaEvent(
+    eventName,
+    {
+      content_name: 'D2C Strategy Call',
+      content_category: 'Consultation',
+      currency: 'INR',
+      value: leadData.value || 0,
+    },
+    {
+      name: leadData.name || '',
+      email: leadData.email || '',
+      phone: leadData.phone || '',
+    }
+  );
+}
+
+// ─────────────────────────────────────────────
+// CTA Click Tracker (Contact intent)
+// ─────────────────────────────────────────────
 export function trackMetaCtaClick(buttonName = 'Book Strategy Call') {
   if (typeof window !== 'undefined' && window.fbq) {
     try {
