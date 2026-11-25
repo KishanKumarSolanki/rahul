@@ -186,7 +186,27 @@ export async function trackMetaEvent(eventName, customData = {}, rawUserData = {
 }
 
 // ─────────────────────────────────────────────
-// Lead Event — form submit
+// 1. ViewContent — Page load (visitor views landing page)
+// ─────────────────────────────────────────────
+export function trackViewContent() {
+  if (typeof window !== 'undefined' && window.fbq) {
+    try {
+      window.fbq('track', 'ViewContent', {
+        content_name: 'D2C Growth Partner Landing Page',
+        content_category: 'Consultation',
+        content_type: 'product',
+      });
+    } catch (e) {}
+  }
+  // Also send via CAPI
+  trackMetaEvent('ViewContent', {
+    content_name: 'D2C Growth Partner Landing Page',
+    content_category: 'Consultation',
+  });
+}
+
+// ─────────────────────────────────────────────
+// 2. Lead — Form submitted (strategy call application)
 // ─────────────────────────────────────────────
 export async function trackMetaLead(formData) {
   return trackMetaEvent(
@@ -209,16 +229,139 @@ export async function trackMetaLead(formData) {
 }
 
 // ─────────────────────────────────────────────
-// CRM Status → Meta Event Mapping
-// New Lead → Lead | Qualified → QualifiedLead | Purchase → Purchase
-// Junk/Not Qualified → DO NOT send
+// 3. SubmitApplication — Strategy call application submitted
+// ─────────────────────────────────────────────
+export async function trackSubmitApplication(formData) {
+  return trackMetaEvent(
+    'SubmitApplication',
+    {
+      content_name: 'D2C Strategy Call Application',
+      content_category: 'Consultation',
+    },
+    {
+      name: formData.name || '',
+      email: formData.email || '',
+      phone: formData.phone || '',
+    }
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4. CompleteRegistration — Application fully submitted
+// ─────────────────────────────────────────────
+export async function trackCompleteRegistration(formData) {
+  return trackMetaEvent(
+    'CompleteRegistration',
+    {
+      content_name: 'Strategy Call Registration',
+      status: 'submitted',
+      currency: 'INR',
+      value: 0,
+    },
+    {
+      name: formData.name || '',
+      email: formData.email || '',
+      phone: formData.phone || '',
+    }
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5. Schedule — Booking a strategy call
+// ─────────────────────────────────────────────
+export async function trackSchedule(formData) {
+  return trackMetaEvent(
+    'Schedule',
+    {
+      content_name: 'D2C Strategy Call',
+      content_category: 'Consultation Booking',
+    },
+    {
+      name: formData.name || '',
+      email: formData.email || '',
+      phone: formData.phone || '',
+    }
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6. InitiateCheckout — CTA button clicked (starting booking)
+// ─────────────────────────────────────────────
+export function trackInitiateCheckout(buttonName = 'Book Strategy Call') {
+  if (typeof window !== 'undefined' && window.fbq) {
+    try {
+      window.fbq('track', 'InitiateCheckout', {
+        content_name: buttonName,
+        content_category: 'Consultation',
+        currency: 'INR',
+        value: 0,
+        num_items: 1,
+      });
+    } catch (e) {}
+  }
+}
+
+// ─────────────────────────────────────────────
+// 7. Contact — CTA click (contact intent)
+// ─────────────────────────────────────────────
+export function trackMetaCtaClick(buttonName = 'Book Strategy Call') {
+  if (typeof window !== 'undefined' && window.fbq) {
+    try {
+      // Fire both Contact + InitiateCheckout on CTA click
+      window.fbq('track', 'Contact', { content_name: buttonName });
+      window.fbq('track', 'InitiateCheckout', {
+        content_name: buttonName,
+        content_category: 'Consultation',
+        currency: 'INR',
+        value: 0,
+        num_items: 1,
+      });
+    } catch (e) {}
+  }
+}
+
+// ─────────────────────────────────────────────
+// 8. Search — If user searches on page (future use)
+// ─────────────────────────────────────────────
+export function trackSearch(searchString = '') {
+  if (typeof window !== 'undefined' && window.fbq) {
+    try {
+      window.fbq('track', 'Search', { search_string: searchString });
+    } catch (e) {}
+  }
+}
+
+// ─────────────────────────────────────────────
+// 9. Purchase — When a client makes a purchase (future CRM trigger)
+// ─────────────────────────────────────────────
+export async function trackPurchase(purchaseData = {}) {
+  return trackMetaEvent(
+    'Purchase',
+    {
+      content_name: 'D2C Growth Partnership',
+      content_category: 'Consultation',
+      currency: 'INR',
+      value: purchaseData.value || 0,
+    },
+    {
+      name: purchaseData.name || '',
+      email: purchaseData.email || '',
+      phone: purchaseData.phone || '',
+    }
+  );
+}
+
+// ─────────────────────────────────────────────
+// 10. CRM Status → Meta Event Mapping
+// new_lead → Lead | qualified → QualifiedLead
+// purchase → Purchase | junk → ❌ not sent
 // ─────────────────────────────────────────────
 export async function trackCrmStatusChange(crmStatus, leadData = {}) {
   const CRM_EVENT_MAP = {
-    'new_lead':   'Lead',
-    'qualified':  'QualifiedLead',
-    'purchase':   'Purchase',
-    // 'junk'     → intentionally not mapped
+    'new_lead':  'Lead',
+    'qualified': 'QualifiedLead',
+    'purchase':  'Purchase',
+    // 'junk'          → intentionally not mapped
     // 'not_qualified' → intentionally not mapped
   };
 
@@ -242,17 +385,4 @@ export async function trackCrmStatusChange(crmStatus, leadData = {}) {
       phone: leadData.phone || '',
     }
   );
-}
-
-// ─────────────────────────────────────────────
-// CTA Click Tracker (Contact intent)
-// ─────────────────────────────────────────────
-export function trackMetaCtaClick(buttonName = 'Book Strategy Call') {
-  if (typeof window !== 'undefined' && window.fbq) {
-    try {
-      window.fbq('track', 'Contact', { content_name: buttonName });
-    } catch (e) {
-      // Ignore
-    }
-  }
 }

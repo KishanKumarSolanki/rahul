@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TopTicker from './components/TopTicker';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -13,7 +13,7 @@ import FinalCta from './components/FinalCta';
 import StickyBottomBar from './components/StickyBottomBar';
 import StrategyModal from './components/StrategyModal';
 import VideoModal from './components/VideoModal';
-import { trackMetaCtaClick } from './utils/metaPixel';
+import { trackMetaCtaClick, trackViewContent } from './utils/metaPixel';
 
 export const LEAD_FORM_URL =
   'https://lead365.in/f/only-for-brands-spending-atleast-inr-60-80k-per-month-wzTsvik8';
@@ -21,6 +21,11 @@ export const LEAD_FORM_URL =
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+  // ViewContent — fires once when page loads
+  useEffect(() => {
+    trackViewContent();
+  }, []);
 
   const handleOpenBooking = (source = 'CTA Button') => {
     trackMetaCtaClick(source);
